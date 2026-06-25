@@ -797,24 +797,20 @@ function go(idx){
 
   rootEl.innerHTML='';
 
-  // 地图
-  const mapEl=buildMap(idx);
-  rootEl.appendChild(mapEl);
-
-  // 内容
-  const div=document.createElement('div');
   const d=DAYS.find(x=>x.id===idx);
+  const div=document.createElement('div');
   div.innerHTML=idx===0?overviewHTML():dayHTML(d);
   rootEl.appendChild(div);
 
-  // 总览页的地图需要插入到 .page 内 .sec:first 之前
-  if(idx===0){
-    const page=div.querySelector('.page');
-    const firstSec=page?page.querySelector('.sec'):null;
-    if(page && firstSec){
-      const m2=buildMap(0);
-      page.insertBefore(m2,firstSec);
-    }
+  // 每日页：在 day-intro 后插入地图
+  if(idx!==0){
+    const intro=div.querySelector('.day-intro');
+    if(intro) intro.after(buildMap(idx));
+  } else {
+    // 总览页：插入到"全程路线图"sec 之后
+    const secs=div.querySelectorAll('.sec');
+    const routeSec=[...secs].find(s=>s.textContent.includes('全程路线图'));
+    if(routeSec) routeSec.after(buildMap(0));
   }
 
   window.scrollTo({top:0,behavior:'smooth'});

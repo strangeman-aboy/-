@@ -6,87 +6,174 @@
 <title>杭州→安吉 竹海峡谷四日游</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:#f2f2f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
-:root{--blue:#007aff;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--purple:#af52de;--gray:#86868b;--card:#fff;--sep:rgba(60,60,67,.12)}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:#f2f2f7;color:#1d1d1f;-webkit-font-smoothing:antialiased;font-size:15px}
+:root{
+  --blue:#007aff;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--purple:#af52de;--teal:#30b0c7;
+  --gray:#86868b;--gray2:#aeaeb2;--gray3:#e5e5ea;--gray4:#f2f2f7;
+  --card:#fff;--sep:rgba(60,60,67,.12);
+  --sh:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 4px 16px rgba(0,0,0,.10);
+}
 
-/* ── tabs ── */
-.tabs{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);position:sticky;top:0;z-index:99;border-bottom:.5px solid var(--sep);scrollbar-width:none}
+/* ─── cover ─── */
+.cover{
+  background:linear-gradient(160deg,#1a3a2a 0%,#2d5a3d 40%,#1e4a5a 100%);
+  padding:48px 20px 36px;text-align:center;position:relative;overflow:hidden;
+}
+.cover::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.cover-emoji{font-size:48px;margin-bottom:12px;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+.cover h1{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cover .sub{font-size:14px;color:rgba(255,255,255,.7);margin-top:8px;letter-spacing:.02em}
+.cover-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.cover-pill{background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:600;padding:5px 12px;border-radius:980px;border:.5px solid rgba(255,255,255,.2)}
+
+/* ─── tabs ─── */
+.tabs{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;
+  background:rgba(255,255,255,.94);backdrop-filter:saturate(180%) blur(20px);
+  position:sticky;top:0;z-index:99;border-bottom:.5px solid var(--sep);scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;padding:7px 15px;border-radius:980px;border:none;background:#e5e5ea;color:var(--gray);font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
-.tab.active{background:var(--blue);color:#fff}
+.tab{flex-shrink:0;padding:7px 14px;border-radius:980px;border:none;
+  background:var(--gray3);color:var(--gray);font-size:13px;font-weight:600;cursor:pointer;
+  transition:all .2s;white-space:nowrap;letter-spacing:-.01em}
+.tab.active{color:#fff}
 
-/* ── route bar ── */
-.route-bar{background:var(--card);border-radius:12px;padding:12px 14px;margin:0 14px 10px;font-size:13px;color:var(--gray);line-height:1.8;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.route-bar strong{color:#1d1d1f}
+/* ─── layout ─── */
+.page{max-width:680px;margin:0 auto;padding-bottom:48px}
 
-/* ── map canvas ── */
-.map-wrap{position:relative;margin:0 14px 10px;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.10)}
-canvas{display:block;width:100%;background:#e8f0e8}
+/* ─── canvas map ─── */
+.map-wrap{margin:0 14px 12px;border-radius:16px;overflow:hidden;box-shadow:var(--sh2);position:relative}
+canvas{display:block;width:100%}
+.map-legend{position:absolute;bottom:8px;right:8px;background:rgba(255,255,255,.88);
+  backdrop-filter:blur(8px);border-radius:8px;padding:5px 8px;
+  font-size:10px;color:#555;line-height:1.8}
+.map-legend span{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle}
 
-/* ── content ── */
-.content{max-width:680px;margin:0 auto;padding:0 0 40px}
-.hero{text-align:center;padding:20px 16px 10px}
-.hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em}
-.hero p{font-size:15px;color:var(--gray);margin-top:4px}
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 14px}
-.ic{background:var(--card);border-radius:12px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.ic .lbl{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
-.ic .val{font-size:14px;font-weight:600;line-height:1.4}
-.sec{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;padding:14px 14px 6px}
-.day-head{padding:14px 14px 8px}
-.day-head h2{font-size:21px;font-weight:700;letter-spacing:-.02em}
-.day-head p{font-size:14px;color:var(--gray);margin-top:2px}
+/* ─── section header ─── */
+.sec{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;
+  letter-spacing:.06em;padding:16px 14px 6px}
 
-/* ── timeline ── */
-.tl{position:relative;padding:0 14px 0 38px}
-.tl::before{content:'';position:absolute;left:27px;top:12px;bottom:12px;width:1.5px;background:var(--sep)}
-.tl-item{position:relative;margin-bottom:8px}
-.tl-dot{position:absolute;left:-17px;top:16px;width:10px;height:10px;border-radius:50%;border:2px solid #f2f2f7}
-.card{background:var(--card);border-radius:12px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer}
-.card:active{opacity:.85}
-.card .tm{font-size:11px;font-weight:600;color:#aeaeb2;letter-spacing:.02em}
-.card .nm{font-size:16px;font-weight:600;margin:2px 0 4px;display:flex;align-items:center;gap:6px}
-.card .ds{font-size:13px;color:var(--gray);line-height:1.5}
-.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px}
-.b-food{background:rgba(255,59,48,.1);color:var(--red)}
-.b-spot{background:rgba(0,122,255,.1);color:var(--blue)}
-.b-hotel{background:rgba(255,149,0,.1);color:var(--orange)}
-.bgt{display:inline-block;margin-top:5px;padding:2px 8px;background:#f2f2f7;border-radius:6px;font-size:12px;color:var(--gray);font-weight:500}
-.detail{display:none;margin-top:8px;padding-top:8px;border-top:.5px solid var(--sep);font-size:12px;color:var(--gray);line-height:1.7;white-space:pre-line}
-.detail.open{display:block}
+/* ─── day header ─── */
+.day-intro{margin:0 14px 10px;background:var(--card);border-radius:16px;
+  overflow:hidden;box-shadow:var(--sh)}
+.day-intro-top{padding:16px 16px 12px;border-bottom:.5px solid var(--sep)}
+.day-intro-top h2{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.day-intro-top .date{font-size:13px;color:var(--gray);margin-top:3px}
+.day-intro-route{padding:10px 16px;font-size:13px;color:var(--gray);line-height:1.8;display:flex;align-items:flex-start;gap:8px}
+.day-intro-route .icon{font-size:16px;flex-shrink:0;margin-top:1px}
 
-/* ── buttons ── */
-.btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.btn{display:inline-flex;align-items:center;gap:3px;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;border:none;cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent}
+/* ─── timeline ─── */
+.tl{position:relative;padding:0 14px 0 44px}
+.tl::before{content:'';position:absolute;left:30px;top:8px;bottom:8px;width:1.5px;background:linear-gradient(to bottom,transparent,var(--sep) 8%,var(--sep) 92%,transparent)}
+.tl-item{position:relative;margin-bottom:10px}
+.tl-dot{position:absolute;left:-20px;top:18px;width:12px;height:12px;border-radius:50%;border:2.5px solid var(--gray4);z-index:1}
+
+/* ─── card ─── */
+.card{background:var(--card);border-radius:14px;box-shadow:var(--sh);overflow:hidden;cursor:pointer;transition:box-shadow .2s}
+.card:active{box-shadow:var(--sh2)}
+.card-top{padding:13px 14px 11px}
+.card-time{font-size:11px;font-weight:700;color:var(--gray2);letter-spacing:.04em;margin-bottom:3px}
+.card-name{font-size:16px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.card-desc{font-size:13px;color:var(--gray);line-height:1.55;margin-top:5px}
+.card-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;letter-spacing:.02em}
+.b-food{background:rgba(255,59,48,.1);color:#d63030}
+.b-spot{background:rgba(0,122,255,.1);color:#0055cc}
+.b-hotel{background:rgba(255,149,0,.1);color:#c07000}
+.b-drive{background:rgba(52,199,89,.1);color:#228b40}
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--gray4);color:var(--gray)}
+.price-tag{font-size:12px;font-weight:700;color:var(--orange);background:rgba(255,149,0,.08);padding:2px 8px;border-radius:5px}
+
+/* ─── tips inside card ─── */
+.card-tips{background:#f9f9fb;border-top:.5px solid var(--sep);padding:10px 14px}
+.tip-row{display:flex;gap:8px;font-size:12px;color:#555;line-height:1.6;padding:3px 0}
+.tip-row .tip-icon{flex-shrink:0;width:18px;text-align:center}
+
+/* ─── action buttons ─── */
+.card-actions{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px;border-top:.5px solid var(--sep);background:#fafafa}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:8px;
+  font-size:12px;font-weight:700;border:none;cursor:pointer;text-decoration:none;
+  -webkit-tap-highlight-color:transparent;transition:filter .15s;letter-spacing:-.01em}
+.btn:active{filter:brightness(.88)}
 .btn-nav{background:var(--blue);color:#fff}
 .btn-xhs{background:#ff2442;color:#fff}
 .btn-dp{background:#ffa700;color:#fff}
+.btn-meituan{background:#ffd100;color:#333}
 
-/* ── tips ── */
-.tip{background:var(--card);border-radius:12px;padding:12px 14px;margin:0 14px 8px;box-shadow:0 1px 3px rgba(0,0,0,.06);font-size:13px;line-height:1.7}
-.tip h4{font-size:14px;font-weight:700;margin-bottom:2px}
-.legend{display:flex;gap:12px;flex-wrap:wrap;padding:4px 14px 14px;font-size:12px;color:var(--gray)}
-.lg{display:flex;align-items:center;gap:5px}
-.lg-dot{width:8px;height:8px;border-radius:50%}
+/* ─── expand toggle ─── */
+.expand-btn{display:flex;align-items:center;justify-content:center;gap:4px;
+  padding:9px;border-top:.5px solid var(--sep);background:none;border:none;
+  width:100%;font-size:12px;color:var(--gray);cursor:pointer;font-weight:600}
+.expand-btn .chevron{transition:transform .25s}
+.expand-btn.open .chevron{transform:rotate(180deg)}
+.card-detail{display:none;padding:0 14px 12px}
+.card-detail.open{display:block}
 
-/* ── action sheet ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.25s}
+/* ─── info cards (overview) ─── */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 14px 4px}
+.ic{background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--sh)}
+.ic .lbl{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.ic .val{font-size:14px;font-weight:700;line-height:1.5}
+.ic .val small{font-size:12px;font-weight:500;color:var(--gray);display:block;margin-top:1px}
+
+/* ─── overview day cards ─── */
+.ov-day{background:var(--card);border-radius:14px;margin:0 14px 8px;
+  padding:14px 16px;box-shadow:var(--sh);cursor:pointer;display:flex;align-items:center;gap:12px}
+.ov-day:active{opacity:.8}
+.ov-day-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ov-day-info{flex:1}
+.ov-day-label{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.ov-day-date{font-size:12px;color:var(--gray);margin-top:2px}
+.ov-day-arrow{color:var(--gray2);font-size:16px}
+
+/* ─── alert cards ─── */
+.alert{margin:0 14px 8px;border-radius:14px;padding:13px 14px;box-shadow:var(--sh);display:flex;gap:12px;align-items:flex-start}
+.alert-icon{font-size:22px;flex-shrink:0;line-height:1}
+.alert-body h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.alert-body p{font-size:13px;color:var(--gray);line-height:1.6}
+.alert-red{background:#fff2f1;border:.5px solid rgba(255,59,48,.2)}
+.alert-orange{background:#fff8f0;border:.5px solid rgba(255,149,0,.2)}
+.alert-blue{background:#f0f6ff;border:.5px solid rgba(0,122,255,.2)}
+.alert-green{background:#f0fbf4;border:.5px solid rgba(52,199,89,.2)}
+
+/* ─── cost table ─── */
+.cost-table{margin:0 14px 8px;background:var(--card);border-radius:14px;box-shadow:var(--sh);overflow:hidden}
+.cost-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;font-size:13px;border-bottom:.5px solid var(--sep)}
+.cost-row:last-child{border-bottom:none;font-weight:700;background:#fafafa}
+.cost-row .cost-label{color:var(--gray)}
+.cost-row .cost-val{font-weight:600;color:#1d1d1f}
+
+/* ─── packing list ─── */
+.pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 14px}
+.pack-item{background:var(--card);border-radius:10px;padding:10px 12px;box-shadow:var(--sh);display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
+.pack-item .pack-icon{font-size:18px}
+
+/* ─── action sheet ─── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:999;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:.25s}
 .overlay.show{opacity:1;pointer-events:auto}
-.sheet{width:100%;max-width:420px;padding:0 8px 28px;transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.sheet{width:100%;max-width:420px;padding:0 10px 32px;
+  transform:translateY(100%);transition:transform .32s cubic-bezier(.22,1,.36,1)}
 .overlay.show .sheet{transform:translateY(0)}
-.sg{background:rgba(255,255,255,.9);backdrop-filter:blur(20px);border-radius:14px;overflow:hidden;margin-bottom:8px}
-.si{display:flex;align-items:center;justify-content:center;padding:16px;font-size:17px;color:var(--blue);font-weight:500;border:none;background:none;width:100%;cursor:pointer}
+.sg{background:rgba(255,255,255,.92);backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);border-radius:16px;overflow:hidden;margin-bottom:8px}
+.si{display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:17px;font-size:17px;color:var(--blue);font-weight:500;
+  border:none;background:none;width:100%;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .si+.si{border-top:.5px solid rgba(0,0,0,.1)}
 .si:active{background:rgba(0,0,0,.05)}
-.si-cancel{font-weight:600}
+.si-cancel{font-weight:700;color:#1d1d1f}
 </style>
 </head>
 <body>
 
 <div class="tabs" id="tabs"></div>
-<div class="content" id="content"></div>
+<div id="root"></div>
 
-<!-- action sheet -->
 <div class="overlay" id="overlay">
   <div class="sheet">
     <div class="sg" id="as-opts"></div>
@@ -95,141 +182,325 @@ canvas{display:block;width:100%;background:#e8f0e8}
 </div>
 
 <script>
-// ══════════ 数据 ══════════
+// ══════════════════════════════════════════
+//  行程数据
+// ══════════════════════════════════════════
 const DAYS = [
-{id:0,label:'总览',color:'#007aff',locs:[]},
+{id:0, label:'总览', color:'#007aff'},
 {
-  id:1,label:'D1 杭州',color:'#34c759',date:'6月25日（周三）下午',title:'抵杭 · 安顿落脚',
-  route:'上海 → 杭州（约2小时）',
+  id:1, label:'D1 杭州', color:'#34c759',
+  date:'6月25日（周三）下午',
+  title:'抵杭 · 安顿落脚',
+  route:'上海 → 杭州  |  自驾约2小时 / 高铁35分钟',
   locs:[
-    {name:'上海出发',time:'14:00',type:'transport',emoji:'🚗',
-     desc:'自驾走G60沪昆高速，约2小时到杭州。或高铁35分钟到杭州东站。',
-     detail:'建议下午2-3点出发避开晚高峰。\n电车用户：杭州市区充电桩密集，抵达后可在酒店附近找。',
-     lat:31.230,lng:121.474},
-    {name:'汉庭酒店·杭州秋涛路店',time:'18:00',type:'hotel',emoji:'🏨',
-     desc:'连锁品牌稳定，位置成熟，次日出发径山约1小时。4人建议订两间标间。',
-     budget:'约¥180-220/间',
-     detail:'携程/汉庭App预订更便宜。\n停车：询问前台周边停车场，市区约¥20-30/晚。',
-     gmap:'汉庭酒店 杭州秋涛路',xhs:'汉庭 杭州秋涛路 入住',
-     lat:30.241,lng:120.196},
-    {name:'晚餐·西湖边杭帮菜',time:'19:30',type:'food',emoji:'🍽️',
-     desc:'西湖醋鱼、龙井虾仁、东坡肉——杭帮菜入门必点。知味观、外婆家均可。',
-     budget:'约¥80-120/人',
-     gmap:'知味观 杭州',xhs:'杭州 杭帮菜 西湖',dp:'杭帮菜 西湖边',
-     lat:30.246,lng:120.155},
+    {
+      name:'上海出发', time:'14:00', type:'drive', emoji:'🚗',
+      desc:'建议下午2点出发，走G60沪昆高速，约2小时到达杭州市区。高铁可从虹桥/上海站出发，约35分钟抵杭州东站。',
+      lat:31.230, lng:121.474,
+      tips:[
+        {icon:'⏰', text:'下午2-3点出发可避开晚高峰，周三非节假日路况良好'},
+        {icon:'⚡', text:'电车用户：杭州市区超级充电桩密集，G60沿途服务区也有快充'},
+        {icon:'🅿️', text:'酒店停车约¥20-30/晚，建议提前询问前台周边停车场位置'},
+      ]
+    },
+    {
+      name:'汉庭酒店·杭州秋涛路店', time:'17:30', type:'hotel', emoji:'🏨',
+      desc:'连锁品牌、服务稳定，位于秋涛路商圈，生活配套成熟。次日驾车前往径山约1小时，位置恰好。4人建议订两间高级大床房或双床房。',
+      budget:'¥180-240/间·夜',
+      lat:30.241, lng:120.196,
+      gmap:'汉庭酒店 杭州秋涛路',
+      xhs:'汉庭 杭州 秋涛路 入住体验',
+      tips:[
+        {icon:'💰', text:'携程/汉庭App会员价更便宜，建议提前2天预订'},
+        {icon:'🛏️', text:'4人出行订两间即可，高级房型有独立浴室更舒适'},
+        {icon:'🥐', text:'含早餐套餐约加¥30/人，可选次日在此吃完再出发'},
+      ]
+    },
+    {
+      name:'晚餐·西湖边杭帮菜', time:'19:00', type:'food', emoji:'🍽️',
+      desc:'第一晚推荐正经打卡一次杭帮菜。西湖醋鱼（酸甜鲜嫩）、龙井虾仁（清鲜回甘）、东坡肉（软糯入味）是必点三件套。知味观·西湖店或外婆家均是口碑老店。',
+      budget:'¥80-130/人',
+      lat:30.246, lng:120.155,
+      gmap:'知味观 西湖店 杭州',
+      xhs:'杭州 杭帮菜 必吃 西湖边',
+      dp:'知味观 杭州',
+      tips:[
+        {icon:'📱', text:'知味观周末需提前1天大众点评取号，周三直接去基本不用等'},
+        {icon:'🍷', text:'外婆家价格更亲民，人均约¥60，适合不想花太多的夜晚'},
+        {icon:'🌃', text:'饭后可沿断桥走一走，夜西湖很美，离酒店打车约¥20'},
+      ]
+    },
   ]
 },
 {
-  id:2,label:'D2 径山→峡谷',color:'#007aff',date:'6月26日（周四）',title:'竹林盘山 · 峡谷玩水',
-  route:'杭州 → 径山（1h）→ 临安（30min）→ 浙西大峡谷（1.5h）→ 太子尖',
+  id:2, label:'D2 径山→峡谷', color:'#007aff',
+  date:'6月26日（周四）',
+  title:'竹林盘山 · 峡谷玩水',
+  route:'杭州 → 径山（1h）→ 临安太湖源（30min）→ 浙西大峡谷（1.5h）→ 太子尖（40min）',
   locs:[
-    {name:'径山寺',time:'09:30',type:'spot',emoji:'🛕',
-     desc:'日本禅宗祖庭，竹林盘山公路驾驶感极佳。进寺品径山茶，感受山野静谧。',
-     budget:'门票免费，茶约¥30-50/人',
-     detail:'盘山公路约15分钟，观景台可随时停车拍照。\n寺内有茶室，推荐坐下喝一泡径山抹茶。\n游玩约1-1.5小时。',
-     gmap:'径山寺 余杭',xhs:'径山寺 攻略 打卡',
-     lat:30.379,lng:119.765},
-    {name:'临安太湖源（沿途）',time:'11:30',type:'spot',emoji:'🌿',
-     desc:'溪水乡道风光，随心停靠拍照，小众山野野趣。沿途随走不用专程停留。',
-     gmap:'临安太湖源 浙江',xhs:'临安太湖源 自驾',
-     lat:30.280,lng:119.350},
-    {name:'午餐·临安农家乐',time:'12:30',type:'food',emoji:'🍽️',
-     desc:'野笋炒肉、溪鱼、山鸡，实惠地道。临安市区或沿途农家餐厅均可。',
-     budget:'约¥40-60/人',
-     gmap:'临安 农家饭店',xhs:'临安 农家乐 推荐',dp:'临安 农家乐 山野菜',
-     lat:30.235,lng:119.720},
-    {name:'浙西大峡谷·剑门关',time:'14:00',type:'spot',emoji:'🏞️',
-     desc:'4人首选剑门关步道，沿溪谷徒步+清凉玩水。备选：老碓溪竹筏漂流。',
-     budget:'门票约¥60/人',
-     detail:'剑门关步道约4km，沿途溪流清澈可下水。\n夏季必备：换洗衣服+防滑凉鞋，基本会湿透。\n游玩约2-3小时。',
-     gmap:'浙西大峡谷 临安',xhs:'浙西大峡谷 剑门关 攻略',dp:'浙西大峡谷',
-     lat:30.190,lng:119.123},
-    {name:'太子尖民宿入住',time:'18:30',type:'hotel',emoji:'🏡',
-     desc:'海拔高、能看云海日出的山顶民宿。旺季必须提前3天以上预订！',
-     budget:'约¥200-350/间',
-     detail:'搜索：美团/小红书搜"太子尖 民宿 日出云海"\n选房：确认能否看日出方向，是否提供晚餐。\n路况：最后几公里山路较窄，注意会车。',
-     gmap:'太子尖 临安',xhs:'太子尖 民宿 日出 云海',
-     lat:30.162,lng:118.917},
-    {name:'晚餐·民宿农家饭',time:'19:30',type:'food',emoji:'🍽️',
-     desc:'提前询问民宿是否提供晚餐（多数山顶民宿可做），或下午在峡谷附近吃好再上山。',
-     budget:'约¥50-80/人',
-     lat:30.162,lng:118.917},
+    {
+      name:'径山寺', time:'09:00', type:'spot', emoji:'🛕',
+      desc:'中国抹茶文化发源地，也是日本茶道的根。寺庙隐于竹林深处，通往山顶的盘山公路是难得的驾驶乐事——发夹弯+竹海隧道，兜风感绝佳。山顶寺院清幽，适合发呆喝茶。',
+      budget:'门票免费，径山茶¥35-60/位',
+      lat:30.379, lng:119.765,
+      gmap:'径山寺 余杭 杭州',
+      xhs:'径山寺 攻略 杭州近郊 盘山公路',
+      tips:[
+        {icon:'🚗', text:'盘山公路约15分钟，推荐车窗开一半，能闻到竹林气息'},
+        {icon:'🍵', text:'山顶茶室可点一壶径山抹茶配茶点，坐下来发呆1小时值'},
+        {icon:'📸', text:'拍照最佳机位：上山途中竹林弯道路段、山顶大殿回廊'},
+        {icon:'⏱️', text:'建议游玩1.5小时，不用赶，下山后再去吃午饭'},
+      ]
+    },
+    {
+      name:'临安太湖源（沿途随停）', time:'11:30', type:'spot', emoji:'🌿',
+      desc:'从径山驾车前往大峡谷途中，沿G330国道会穿过太湖源溪谷乡道。溪流清澈、山村宁静，不是景区但胜似景区。随时可以把车停在路边溪边，踩水拍照。',
+      lat:30.280, lng:119.350,
+      gmap:'临安 太湖源 浙江',
+      xhs:'临安太湖源 自驾 小众',
+      tips:[
+        {icon:'🚦', text:'沿途有几处明显的溪边停车空地，路宽可以安全停车'},
+        {icon:'📷', text:'夏天溪水水位高，溪石、青苔、山影构图随手出大片'},
+        {icon:'🥪', text:'临安市区有711/全家，可顺路买点零食和矿泉水备用'},
+      ]
+    },
+    {
+      name:'午餐·临安农家乐', time:'12:30', type:'food', emoji:'🍽️',
+      desc:'临安山区的农家菜是本次行程最接地气的一餐。野笋炒腊肉、溪鱼红烧、山鸡煲、野生蕨菜——食材当天现采，价格比城里便宜一半。推荐在大峡谷景区门口附近找口碑农家餐厅。',
+      budget:'¥40-65/人',
+      lat:30.235, lng:119.720,
+      gmap:'临安 大峡谷附近 农家乐',
+      xhs:'临安 农家乐 野笋 推荐',
+      dp:'临安 农家菜 大峡谷附近',
+      tips:[
+        {icon:'🐟', text:'溪鱼一定要点，现钓现烧，红烧或清蒸都鲜'},
+        {icon:'🌿', text:'野笋季节（4-6月）一定点笋干烧肉，其他时间有腌笋'},
+        {icon:'💵', text:'多数农家乐只收现金/微信，卡类支付不一定能用'},
+      ]
+    },
+    {
+      name:'浙西大峡谷·剑门关步道', time:'14:00', type:'spot', emoji:'🏞️',
+      desc:'4个男生出行首选剑门关步道——沿溪谷峭壁蜿蜒前行，一边是轰鸣瀑布，一边是脚踝深的清凉溪水。整段步道约4km，走走停停约2.5小时。夏天进去基本全湿，穿着防滑凉鞋或旧鞋下水。',
+      budget:'门票约¥60/人，可大众点评/美团提前买省¥5-10',
+      lat:30.190, lng:119.123,
+      gmap:'浙西大峡谷 剑门关 临安',
+      xhs:'浙西大峡谷 剑门关 徒步攻略 玩水',
+      dp:'浙西大峡谷',
+      tips:[
+        {icon:'👟', text:'强烈建议穿防滑凉鞋或旧运动鞋，峡谷底部全是湿石头'},
+        {icon:'👕', text:'备一套换洗衣服放车里，出来基本下半身全湿透'},
+        {icon:'🌊', text:'老碓溪备选：竹筏漂流更轻松，约¥80/人，全程约1小时'},
+        {icon:'🕓', text:'建议下午2点进，4:30前出来，景区5点闭园'},
+        {icon:'📵', text:'峡谷内无信号，提前截图地图或下载离线地图'},
+      ]
+    },
+    {
+      name:'太子尖民宿', time:'18:30', type:'hotel', emoji:'🏡',
+      desc:'全程最重要的一个住宿决策。太子尖海拔1500m+，是浙西看日出云海最佳位置之一。山顶民宿资源稀缺，能看日出的房型供不应求。建议现在就去美团/小红书锁房，不然到时候没得住。',
+      budget:'¥230-380/间·夜（含晚餐+早餐更划算）',
+      lat:30.162, lng:118.917,
+      gmap:'太子尖 民宿 临安',
+      xhs:'太子尖 民宿 日出云海 预订攻略',
+      tips:[
+        {icon:'📅', text:'旺季（6-8月）务必提前3天以上预订，好房型随时售罄'},
+        {icon:'🧭', text:'选房关键词：日出朝向、云海观景台距离、是否可停车'},
+        {icon:'🍲', text:'多数民宿提供半食（晚餐+早餐），约¥60-80/人，值得加'},
+        {icon:'🛣️', text:'上山最后5km盘山路较窄，对向来车要减速靠边，不慌'},
+        {icon:'⭐', text:'推荐搜索：「太子尖云舍」「太子尖望月山居」等民宿'},
+      ]
+    },
+    {
+      name:'晚餐·民宿农家晚饭', time:'19:30', type:'food', emoji:'🍽️',
+      desc:'太子尖山顶没有外卖，建议提前和民宿确认是否提供晚餐。多数民宿会做山野农家菜，笋干、山菌、土鸡，在山顶就着夜风吃，意境绝佳。',
+      budget:'¥55-80/人（含在民宿半食套餐内更便宜）',
+      lat:30.162, lng:118.917,
+      tips:[
+        {icon:'📞', text:'入住前电话确认民宿是否供晚餐，提前说好人数'},
+        {icon:'🌙', text:'饭后不要急着睡，山顶星空极好，躺椅上仰望银河'},
+        {icon:'🔦', text:'备一个手电筒，山顶公共区域夜晚灯光昏暗'},
+      ]
+    },
   ]
 },
 {
-  id:3,label:'D3 天池→竹海',color:'#ff9500',date:'6月27日（周五）',title:'日出云海 · 穿越华浪线 · 安吉竹海',
-  route:'太子尖 → 华浪线 → 浙西天池 → 安吉大竹海',
+  id:3, label:'D3 天池→竹海', color:'#ff9500',
+  date:'6月27日（周五）',
+  title:'日出云海 · 华浪线穿越 · 安吉竹海',
+  route:'太子尖 → 华浪线（40km山脊公路）→ 浙西天池 → 安吉大竹海',
   locs:[
-    {name:'太子尖观日出',time:'05:00',type:'spot',emoji:'🌅',
-     desc:'夏季日出约5:15-5:30，提前20分钟到观景台占位。雨后晴天云海概率最高！',
-     detail:'云海贴士：前一天下雨+次日晴，命中率极高。\n即使没云海，山顶日出也非常值得。\n推荐超广角端，带山脊轮廓构图。',
-     gmap:'太子尖观景台 临安',xhs:'太子尖 日出 云海',
-     lat:30.162,lng:118.917},
-    {name:'华浪线穿越',time:'07:30',type:'transport',emoji:'🛣️',
-     desc:'行程精华路段，穿行山脊之间，峡谷、云海、古村尽收眼底。慢开随时停。',
-     detail:'华浪线全程约40公里，建议1.5-2小时慢慢走。\n沿途观景台众多，不用赶时间。',
-     gmap:'华浪线 临安',xhs:'华浪线 自驾 攻略',
-     lat:30.220,lng:119.000},
-    {name:'浙西天池',time:'09:30',type:'spot',emoji:'🌊',
-     desc:'高海拔天然湖泊，无过度商业化，环湖步道约1小时，吹风发呆缓解疲惫。',
-     budget:'门票约¥30-40/人',
-     detail:'环湖一圈约3-4km，轻松步行1小时。\n湖边可解决午饭，有简餐。\n夏季气温比山下低5-8度，带薄外套。',
-     gmap:'浙西天池 临安',xhs:'浙西天池 攻略',dp:'浙西天池',
-     lat:30.296,lng:119.120},
-    {name:'午餐·天池周边',time:'11:30',type:'food',emoji:'🍽️',
-     desc:'天池边有简餐，或下山到临安市区有更多选择。山地土菜为主。',
-     budget:'约¥40-60/人',
-     gmap:'浙西天池 餐厅',lat:30.280,lng:119.100},
-    {name:'安吉大竹海',time:'14:00',type:'spot',emoji:'🎍',
-     desc:'《卧虎藏龙》取景地，万亩毛竹气势震撼。下午2-4点入园光线最美。夏季可加选峡谷漂流！',
-     budget:'门票约¥85/人，漂流另¥80',
-     detail:'游览约2-2.5小时。\n竹海内有电瓶车，建议步行+电瓶车结合。\n夏季峡谷漂流驱暑超爽，推荐！',
-     gmap:'安吉大竹海',xhs:'安吉大竹海 卧虎藏龙 攻略',dp:'安吉大竹海',
-     lat:30.488,lng:119.660},
-    {name:'晚餐·安吉竹笋宴',time:'18:30',type:'food',emoji:'🍽️',
-     desc:'安吉特色：笋干烧肉、腌笃鲜、炒野笋、竹荪炖鸡。县城农家餐厅基本都有。',
-     budget:'约¥60-80/人',
-     gmap:'安吉县城 竹笋 农家菜',xhs:'安吉 竹笋宴 推荐',dp:'安吉 竹笋 农家菜',
-     lat:30.630,lng:119.680},
-    {name:'安吉住宿',time:'20:00',type:'hotel',emoji:'🏨',
-     desc:'县城汉庭/全季连锁，或找竹林精品民宿。次日还有半天，可睡个好觉。',
-     budget:'连锁约¥180-250/间，精品民宿¥300-500/间',
-     detail:'小红书搜"安吉 竹林民宿"，很多带庭院竹景的民宿。',
-     gmap:'安吉县城 酒店',xhs:'安吉 竹林民宿 精品',
-     lat:30.630,lng:119.680},
+    {
+      name:'太子尖日出云海', time:'05:00', type:'spot', emoji:'🌅',
+      desc:'凌晨5点闹钟，这是全程最值得爬起来的一刻。夏季日出约5:15-5:30，提前去观景台选好机位。若前一天下雨，这天清晨云海概率极高——层层白云在山谷间翻涌，如同置身仙境。',
+      lat:30.162, lng:118.917,
+      gmap:'太子尖观景台 临安',
+      xhs:'太子尖 日出 云海 超级震撼',
+      tips:[
+        {icon:'☁️', text:'云海公式：前一天傍晚下雨 + 夜间转晴 = 次日早晨云海概率80%+'},
+        {icon:'📸', text:'拍摄建议：大光圈长焦压缩感好，超广角拍气势，手机开HDR'},
+        {icon:'🧥', text:'山顶凌晨约15-18°C，穿长裤和薄外套，比想象中冷'},
+        {icon:'⏰', text:'提前20分钟到观景台选位，日出过程约持续40分钟'},
+      ]
+    },
+    {
+      name:'早餐 + 华浪线出发', time:'07:30', type:'drive', emoji:'🛣️',
+      desc:'吃完民宿早餐，沿华浪线（华墅乡→浪广村）开始今天最精华的驾驶体验。全程约40公里山脊公路，左右两侧是连绵峡谷与山村，偶有云雾穿行，像在天上开车。全程慢开，不建议赶路。',
+      lat:30.220, lng:119.000,
+      gmap:'华浪线 临安 浙江',
+      xhs:'华浪线 自驾 绝美 山脊公路',
+      tips:[
+        {icon:'🚗', text:'全程40km，建议1.5-2小时慢慢开，沿途观景台可随时停车'},
+        {icon:'📷', text:'有几段路两侧都是峡谷，只有路面宽3米，拍照注意安全'},
+        {icon:'⛽', text:'华浪线沿途无加油站，出发前确认油量/电量充足'},
+        {icon:'📵', text:'部分路段无信号，提前下载高德离线地图这条路线'},
+      ]
+    },
+    {
+      name:'浙西天池', time:'10:00', type:'spot', emoji:'🌊',
+      desc:'海拔900m的天然高山湖泊，水质清澈，四周松林环绕。没有过度商业化是它最大的优点——不卖商品、不放音乐、不催游客。环湖一圈约3.5km，走完约1小时，适合放空发呆。',
+      budget:'门票约¥35/人',
+      lat:30.296, lng:119.120,
+      gmap:'浙西天池 临安',
+      xhs:'浙西天池 攻略 高山湖泊',
+      dp:'浙西天池',
+      tips:[
+        {icon:'🌡️', text:'山顶气温比山下低7-10°C，即使盛夏也凉爽，带件外套'},
+        {icon:'🥾', text:'环湖步道平整好走，普通运动鞋即可，约1小时走完'},
+        {icon:'🍱', text:'湖边有简餐（面条/盒饭），可在此解决午饭，¥25-40/位'},
+        {icon:'📸', text:'最佳拍摄：湖面倒影在无风清晨，阴天云层压低时氛围感更强'},
+      ]
+    },
+    {
+      name:'午餐·天池旁或下山途中', time:'12:00', type:'food', emoji:'🍽️',
+      desc:'天池边有几家简单餐馆，山地土菜、米面为主。若想吃好，建议下山到临安市区，选择更多且性价比高。',
+      budget:'¥35-55/人',
+      lat:30.280, lng:119.100,
+      gmap:'浙西天池 附近餐厅',
+      dp:'临安 山野菜 农家菜',
+      tips:[
+        {icon:'🔋', text:'临安市区有超级充电桩，电车用户可在午饭时补电'},
+        {icon:'⏰', text:'午饭控制在1小时内，下午留足时间给安吉竹海'},
+      ]
+    },
+    {
+      name:'安吉大竹海', time:'14:30', type:'spot', emoji:'🎍',
+      desc:'《卧虎藏龙》竹林打斗场景就在这里拍摄。万亩毛竹连绵成海，微风中竹声沙沙，阳光透过竹缝洒下金色光柱。下午2-4点光线最美最好拍。夏季特供：园内峡谷漂流，全程约40分钟，必玩。',
+      budget:'门票¥85/人，漂流另收¥80/人，可美团提前购优惠票',
+      lat:30.488, lng:119.660,
+      gmap:'安吉大竹海 景区',
+      xhs:'安吉大竹海 卧虎藏龙 漂流 攻略',
+      dp:'安吉大竹海',
+      tips:[
+        {icon:'🎬', text:'卧虎藏龙拍摄地在园区中部，有标识牌，拍摄同款竹林照'},
+        {icon:'🌊', text:'峡谷漂流约40min，全程湿透，建议留好一套换洗衣服'},
+        {icon:'🚃', text:'园内有电瓶车（约¥30/人），建议先坐车了解全貌再步行'),
+        {icon:'⏰', text:'景区17:30闭园，漂流项目16:30停止入场，别错过'},
+        {icon:'📷', text:'竹林光影在下午3-4点最好看，逆光拍竹影和金色光柱'},
+      ]
+    },
+    {
+      name:'晚餐·安吉竹笋宴', time:'18:30', type:'food', emoji:'🍽️',
+      desc:'在安吉吃一顿以竹笋为主题的晚餐，是对这片竹海最好的致敬。腌笃鲜（鲜笋+咸肉+豆腐同炖）、笋干红烧肉、竹荪炖土鸡、手剥笋——全是本地特色，安吉县城随便找家农家菜馆都有。',
+      budget:'¥60-90/人',
+      lat:30.630, lng:119.680,
+      gmap:'安吉县城 竹笋宴 农家菜',
+      xhs:'安吉 竹笋宴 腌笃鲜 推荐',
+      dp:'安吉 竹笋 农家菜',
+      tips:[
+        {icon:'🥢', text:'腌笃鲜是必点，鲜笋+咸肉+豆腐同炖，汤头鲜浓'},
+        {icon:'🍺', text:'安吉本地白茶可以点一壶饭后喝，清爽解乏'},
+        {icon:'📍', text:'天荒坪镇或安吉县城美食街附近农家菜最集中'},
+      ]
+    },
+    {
+      name:'安吉住宿', time:'21:00', type:'hotel', emoji:'🏨',
+      desc:'安吉住一晚，次日早上还有深溪古村可逛。县城有全季/汉庭连锁可选，想要更好体验可找带庭院竹景的精品民宿，价格略高但入住体验明显提升。',
+      budget:'连锁¥180-260/间，精品民宿¥320-550/间',
+      lat:30.630, lng:119.680,
+      gmap:'安吉县城 全季酒店',
+      xhs:'安吉 竹林民宿 精品 推荐',
+      tips:[
+        {icon:'🌿', text:'小红书搜"安吉 竹林民宿"，很多带庭院竹景的小院民宿'},
+        {icon:'🅿️', text:'县城酒店停车均免费，精品民宿一般也有专属停车位'},
+        {icon:'😴', text:'今天强度不小，早点入睡，明天还有深溪古村和返程'},
+      ]
+    },
   ]
 },
 {
-  id:4,label:'D4 返沪',color:'#af52de',date:'6月28日（周六）上午',title:'深溪古村 · 返回上海',
-  route:'安吉 → 深溪古村 → 上海（约2.5h）',
+  id:4, label:'D4 返沪', color:'#af52de',
+  date:'6月28日（周六）上午',
+  title:'深溪古村 · 买茶回沪',
+  route:'安吉 → 深溪古村（20min）→ 买伴手礼 → 上海（约2.5h）',
   locs:[
-    {name:'深溪古村',time:'09:00',type:'spot',emoji:'🏡',
-     desc:'石板路、老宅、小溪，乡村慢生活收尾。顺手买安吉白茶和竹制品当伴手礼。',
-     budget:'免费',
-     detail:'游览约1-1.5小时，轻松不累。\n伴手礼：安吉白茶（产地价）、竹编制品。\n村口有免费停车场。',
-     gmap:'深溪古村 安吉',xhs:'安吉 深溪古村 打卡',
-     lat:30.490,lng:119.620},
-    {name:'午饭后上高速返沪',time:'12:00',type:'transport',emoji:'🚗',
-     desc:'安吉→上海约2.5小时，走G50沪渝高速。中午出发避开下午高峰，预计3点前到家。',
-     detail:'全程高速约180公里，油费约¥80-100。\n途中可在服务区休息一次。',
-     gmap:'安吉 上海 高速',
-     lat:30.630,lng:119.680},
+    {
+      name:'深溪古村', time:'09:00', type:'spot', emoji:'🏘️',
+      desc:'安吉最有乡村气质的角落：石板路、百年老宅、溪水穿村而过。没有门票、没有喇叭广播、没有人催你走。适合最后半天放慢脚步，拍拍照、喝杯白茶，用一种慵懒的方式收尾这次旅行。',
+      budget:'免费',
+      lat:30.490, lng:119.620,
+      gmap:'深溪古村 安吉 浙江',
+      xhs:'安吉 深溪古村 古村落 打卡',
+      tips:[
+        {icon:'🚶', text:'村子不大，逛完约1-1.5小时，节奏慢悠悠'},
+        {icon:'📷', text:'溪边石板路+老宅青苔，随手拍都是胶片感'},
+        {icon:'🅿️', text:'村口有免费停车场，直接开进去停'},
+      ]
+    },
+    {
+      name:'买伴手礼·安吉白茶', time:'10:30', type:'spot', emoji:'🍵',
+      desc:'安吉白茶是产地直购最划算的地方，比上海超市便宜30-50%。深溪古村或安吉县城均有产地直营茶叶店。安吉白茶滋味鲜醇，送长辈或自用都合适。',
+      budget:'¥80-300/盒（规格不同价差大）',
+      lat:30.630, lng:119.680,
+      gmap:'安吉白茶 产地直销 安吉',
+      xhs:'安吉白茶 哪里买 产地价 攻略',
+      tips:[
+        {icon:'🍃', text:'认准"安吉白茶"品种（非白茶工艺），外形细如针，颜色翠绿'},
+        {icon:'💰', text:'产地价明前茶约¥150-300/100g，别被坑，货比三家'},
+        {icon:'🎁', text:'礼盒包装可真空封装，带回上海送人很体面'},
+      ]
+    },
+    {
+      name:'午餐后启程返沪', time:'12:00', type:'drive', emoji:'🚗',
+      desc:'安吉随便找个面馆/快餐吃完午饭，上G50沪渝高速返回上海。全程约170km，正常行驶2.5小时，预计下午3点前到家。周六中午出发是最佳时机，早于返程高峰。',
+      lat:30.630, lng:119.680,
+      gmap:'安吉 上海 G50高速',
+      tips:[
+        {icon:'⛽', text:'上高速前加油/充电，沪渝高速服务区间距约40-60km'},
+        {icon:'🕐', text:'周六晚高峰从下午4点开始，中午出发可以轻松避开'},
+        {icon:'🎵', text:'2.5小时车程，提前准备好歌单，愉快收尾'},
+        {icon:'🏠', text:'预计下午2:30-3:00抵达上海，完美收官'},
+      ]
+    },
   ]
 },
 ];
 
-// ══════════ 地图（纯 Canvas，离线可用）══════════
+// ══════════════════════════════════════════
+//  Canvas 路线地图
+// ══════════════════════════════════════════
+const DAY_COLORS = {
+  1:'#34c759', 2:'#007aff', 3:'#ff9500', 4:'#af52de'
+};
+const TYPE_BG = {
+  food:'#ff3b30', spot:'#007aff', hotel:'#ff9500', drive:'#34c759', spot2:'#30b0c7'
+};
+
 function buildMap(dayId){
   const wrap = document.createElement('div');
   wrap.className = 'map-wrap';
 
-  // 收集所有点
   let pts = [];
-  if(dayId===0){ DAYS.forEach(d=>d.locs.forEach(l=>{ if(l.lat) pts.push({...l,color:d.color,dayLabel:d.label}); })); }
-  else { const d=DAYS.find(x=>x.id===dayId); if(d) pts=d.locs.filter(l=>l.lat).map(l=>({...l,color:d.color})); }
+  if(dayId===0){
+    DAYS.forEach(d=>{
+      if(!d.locs) return;
+      d.locs.forEach(l=>{ if(l.lat) pts.push({...l, color: DAY_COLORS[d.id]||'#888'}); });
+    });
+  } else {
+    const d = DAYS.find(x=>x.id===dayId);
+    if(d && d.locs) pts = d.locs.filter(l=>l.lat).map(l=>({...l, color: DAY_COLORS[d.id]||'#888'}));
+  }
   if(!pts.length){ wrap.style.display='none'; return wrap; }
 
-  const W=680, H=220;
+  const W=680, H=240;
   const canvas=document.createElement('canvas');
   canvas.width=W*2; canvas.height=H*2;
   canvas.style.height=H+'px';
@@ -237,192 +508,333 @@ function buildMap(dayId){
   const ctx=canvas.getContext('2d');
   ctx.scale(2,2);
 
-  // 计算 bbox
   const lats=pts.map(p=>p.lat), lngs=pts.map(p=>p.lng);
-  let minLat=Math.min(...lats),maxLat=Math.max(...lats),minLng=Math.min(...lngs),maxLng=Math.max(...lngs);
-  const padFrac=0.12;
-  const dLat=(maxLat-minLat)||0.05, dLng=(maxLng-minLng)||0.05;
-  minLat-=dLat*padFrac; maxLat+=dLat*padFrac;
-  minLng-=dLng*padFrac; maxLng+=dLng*padFrac;
+  let minLat=Math.min(...lats), maxLat=Math.max(...lats);
+  let minLng=Math.min(...lngs), maxLng=Math.max(...lngs);
+  const dLat=(maxLat-minLat)||0.08, dLng=(maxLng-minLng)||0.12;
+  const pad=0.14;
+  minLat-=dLat*pad; maxLat+=dLat*pad;
+  minLng-=dLng*pad; maxLng+=dLng*pad;
 
-  function proj(lat,lng){
-    const x=(lng-minLng)/(maxLng-minLng)*(W-20)+10;
-    const y=(maxLat-lat)/(maxLat-minLat)*(H-20)+10;
-    return [x,y];
-  }
+  const px=(lat,lng)=>[(lng-minLng)/(maxLng-minLng)*(W-24)+12, (maxLat-lat)/(maxLat-minLat)*(H-28)+14];
 
-  // 背景
-  ctx.fillStyle='#eef2ee'; ctx.fillRect(0,0,W,H);
-  // 网格线
-  ctx.strokeStyle='rgba(255,255,255,.6)'; ctx.lineWidth=1;
-  for(let i=0;i<5;i++){ const y=i*(H/4); ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke(); }
-  for(let i=0;i<9;i++){ const x=i*(W/8); ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke(); }
+  // 背景渐变
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#e8f0eb'); bg.addColorStop(1,'#ddeaf0');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  // 折线
-  if(dayId!==0 && pts.length>1){
-    const day=DAYS.find(x=>x.id===dayId);
-    ctx.beginPath(); ctx.setLineDash([5,4]);
-    ctx.strokeStyle=day?day.color+'99':'#aaa'; ctx.lineWidth=1.8;
-    const [x0,y0]=proj(pts[0].lat,pts[0].lng); ctx.moveTo(x0,y0);
-    pts.forEach(p=>{ const [x,y]=proj(p.lat,p.lng); ctx.lineTo(x,y); });
-    ctx.stroke(); ctx.setLineDash([]);
+  // 网格
+  ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.lineWidth=.8;
+  for(let i=1;i<6;i++){ const y=H/6*i; ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke(); }
+  for(let i=1;i<12;i++){ const x=W/12*i; ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke(); }
+
+  // 路线
+  if(dayId===0){
+    // 全程路线按天分段画
+    const byDay = {};
+    DAYS.forEach(d=>{ if(d.locs) byDay[d.id]=d.locs.filter(l=>l.lat); });
+    [1,2,3,4].forEach(did=>{
+      const dl=byDay[did]; if(!dl||dl.length<2) return;
+      ctx.beginPath(); ctx.setLineDash([6,4]);
+      ctx.strokeStyle=(DAY_COLORS[did]||'#aaa')+'bb'; ctx.lineWidth=2;
+      const [x0,y0]=px(dl[0].lat,dl[0].lng); ctx.moveTo(x0,y0);
+      dl.forEach(l=>{ const [x,y]=px(l.lat,l.lng); ctx.lineTo(x,y); });
+      ctx.stroke(); ctx.setLineDash([]);
+    });
+  } else {
+    if(pts.length>1){
+      ctx.beginPath(); ctx.setLineDash([6,4]);
+      ctx.strokeStyle=pts[0].color+'cc'; ctx.lineWidth=2.5;
+      const [x0,y0]=px(pts[0].lat,pts[0].lng); ctx.moveTo(x0,y0);
+      pts.forEach(p=>{ const [x,y]=px(p.lat,p.lng); ctx.lineTo(x,y); });
+      ctx.stroke(); ctx.setLineDash([]);
+    }
   }
 
   // 标记点
   pts.forEach((p,i)=>{
-    const [x,y]=proj(p.lat,p.lng);
-    // 光晕
-    ctx.beginPath(); ctx.arc(x,y,11,0,Math.PI*2);
-    ctx.fillStyle=p.color+'22'; ctx.fill();
-    // 圆
+    const [x,y]=px(p.lat,p.lng);
+    const col=p.color||'#888';
+    // 外圈光晕
+    ctx.beginPath(); ctx.arc(x,y,14,0,Math.PI*2);
+    ctx.fillStyle=col+'1a'; ctx.fill();
+    // 中圈
+    ctx.beginPath(); ctx.arc(x,y,10,0,Math.PI*2);
+    ctx.fillStyle=col+'33'; ctx.fill();
+    // 实心圆
     ctx.beginPath(); ctx.arc(x,y,7,0,Math.PI*2);
-    ctx.fillStyle=p.color; ctx.fill();
-    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle=col; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2.5; ctx.stroke();
     // 序号
     ctx.fillStyle='#fff'; ctx.font='bold 8px -apple-system,sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText(i+1,x,y);
-    // label
-    ctx.fillStyle='#333'; ctx.font='500 10px -apple-system,sans-serif';
-    ctx.textAlign='center'; ctx.textBaseline='top';
-    const label=p.name.length>7?p.name.slice(0,6)+'…':p.name;
-    ctx.fillText(label,x,y+10);
+    // 名称标签
+    const label=p.name.length>6?p.name.slice(0,5)+'…':p.name;
+    ctx.font='600 9.5px -apple-system,sans-serif';
+    ctx.fillStyle='rgba(0,0,0,.65)'; ctx.textAlign='center'; ctx.textBaseline='top';
+    // 文字背景
+    const tw=ctx.measureText(label).width;
+    ctx.fillStyle='rgba(255,255,255,.8)';
+    ctx.fillRect(x-tw/2-2,y+10,tw+4,13);
+    ctx.fillStyle='rgba(0,0,0,.65)';
+    ctx.fillText(label,x,y+11);
   });
 
-  // 小标题
+  // 图例（总览才显示）
   if(dayId===0){
-    ctx.fillStyle='rgba(0,0,0,.35)'; ctx.font='500 11px -apple-system,sans-serif';
-    ctx.textAlign='left'; ctx.textBaseline='top';
-    ctx.fillText('全程路线概览',8,6);
+    const leg=[{c:'#34c759',t:'D1'},{c:'#007aff',t:'D2'},{c:'#ff9500',t:'D3'},{c:'#af52de',t:'D4'}];
+    let lx=8;
+    leg.forEach(({c,t})=>{
+      ctx.beginPath(); ctx.arc(lx+5,H-8,5,0,Math.PI*2);
+      ctx.fillStyle=c; ctx.fill();
+      ctx.fillStyle='rgba(0,0,0,.55)'; ctx.font='600 9px -apple-system,sans-serif';
+      ctx.textAlign='left'; ctx.textBaseline='middle';
+      ctx.fillText(t,lx+13,H-8);
+      lx+=30;
+    });
   }
 
   return wrap;
 }
 
-// ══════════ 渲染卡片 ══════════
-const TYPE_COLOR={food:'--red',spot:'--blue',hotel:'--orange',transport:'--gray',drink:'--purple'};
-const BADGE={food:'<span class="badge b-food">餐</span>',spot:'<span class="badge b-spot">景</span>',hotel:'<span class="badge b-hotel">住</span>'};
+// ══════════════════════════════════════════
+//  卡片渲染
+// ══════════════════════════════════════════
+const BADGE_MAP={
+  food:'<span class="badge b-food">餐厅</span>',
+  spot:'<span class="badge b-spot">景点</span>',
+  hotel:'<span class="badge b-hotel">住宿</span>',
+  drive:'<span class="badge b-drive">驾车</span>',
+};
+const DOT_COLOR={food:'--red',spot:'--blue',hotel:'--orange',drive:'--green'};
 
-function card(loc,dayIdx){
-  const uid='c'+Math.random().toString(36).slice(2);
-  const dot=TYPE_COLOR[loc.type]||'--gray';
-  const bdg=BADGE[loc.type]||'';
+let _uid=0;
+function uid(){ return 'u'+(++_uid); }
+
+function renderCard(loc){
+  const id=uid();
   const gmapUrl=loc.gmap?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.gmap)}`:'';
   const amapUrl=loc.lat?`https://uri.amap.com/marker?position=${loc.lng},${loc.lat}&name=${encodeURIComponent(loc.name)}&coordinate=wgs84&callnative=1`:'';
 
+  // action buttons
   let btns='';
-  if(loc.lat){
-    btns+=`<button class="btn btn-nav" onclick="openAS('${loc.name.replace(/'/g,"\\'")}','${gmapUrl}','${amapUrl}')">📍 导航</button>`;
-  }
-  if(loc.xhs){
-    const url=`https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(loc.xhs)}&source=web_explore_feed`;
-    btns+=`<a href="${url}" target="_blank" class="btn btn-xhs">📕 小红书</a>`;
-  }
-  if(loc.dp){
-    const url=`https://m.dianping.com/searchshop?keyword=${encodeURIComponent(loc.dp)}`;
-    btns+=`<a href="${url}" target="_blank" class="btn btn-dp">🍜 大众点评</a>`;
-  }
+  if(loc.lat) btns+=`<button class="btn btn-nav" onclick="openAS('${esc(loc.name)}','${gmapUrl}','${amapUrl}')">📍 导航</button>`;
+  if(loc.xhs) btns+=`<a href="https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(loc.xhs)}&source=web_explore_feed" target="_blank" class="btn btn-xhs">📕 小红书</a>`;
+  if(loc.dp)  btns+=`<a href="https://m.dianping.com/searchshop?keyword=${encodeURIComponent(loc.dp)}" target="_blank" class="btn btn-dp">🍜 大众点评</a>`;
+
+  // tips
+  const tipsHTML=(loc.tips||[]).map(t=>`<div class="tip-row"><span class="tip-icon">${t.icon}</span><span>${t.text}</span></div>`).join('');
+
+  const hasTips=tipsHTML.length>0;
 
   return `<div class="tl-item">
-    <div class="tl-dot" style="background:var(${dot})"></div>
-    <div class="card" onclick="toggle('${uid}')">
-      <div class="tm">${loc.time}</div>
-      <div class="nm">${bdg} ${loc.emoji||''} ${loc.name}</div>
-      <div class="ds">${loc.desc}</div>
-      ${loc.budget?`<div class="bgt">${loc.budget}</div>`:''}
-      ${btns?`<div class="btns" onclick="event.stopPropagation()">${btns}</div>`:''}
-      ${loc.detail?`<div class="detail" id="${uid}">${loc.detail}</div>`:''}
+  <div class="tl-dot" style="background:var(${DOT_COLOR[loc.type]||'--gray'})"></div>
+  <div class="card">
+    <div class="card-top" onclick="toggleDetail('${id}','${id}b')">
+      <div class="card-time">${loc.time}</div>
+      <div class="card-name">${BADGE_MAP[loc.type]||''} ${loc.emoji||''} ${loc.name}</div>
+      <div class="card-desc">${loc.desc}</div>
+      <div class="card-meta">
+        ${loc.budget?`<span class="price-tag">💰 ${loc.budget}</span>`:''}
+      </div>
+    </div>
+    ${hasTips?`<div class="card-tips" id="${id}">${tipsHTML}</div>`:''}
+    ${btns?`<div class="card-actions">${btns}</div>`:''}
+  </div>
+</div>`;
+}
+
+function esc(s){ return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+function toggleDetail(a,b){
+  ['card-tips'].forEach(()=>{
+    const el=document.getElementById(a);
+    // tips always visible now, skip toggle
+  });
+}
+
+// ══════════════════════════════════════════
+//  总览页
+// ══════════════════════════════════════════
+function overviewHTML(){
+  const dayCards=DAYS.slice(1).map(d=>`
+    <div class="ov-day" onclick="go(${d.id})">
+      <div class="ov-day-dot" style="background:${d.color}"></div>
+      <div class="ov-day-info">
+        <div class="ov-day-label">${d.label} · ${d.title}</div>
+        <div class="ov-day-date">${d.date}</div>
+      </div>
+      <div class="ov-day-arrow">›</div>
+    </div>`).join('');
+
+  return `
+  <div class="cover">
+    <span class="cover-emoji">🎍</span>
+    <h1>杭州·安吉 竹海峡谷四日游</h1>
+    <p class="sub">竹林盘山 · 峡谷瀑布 · 太子尖云海 · 高山天池</p>
+    <div class="cover-pills">
+      <span class="cover-pill">🚗 4人自驾</span>
+      <span class="cover-pill">📅 6月25-28日</span>
+      <span class="cover-pill">📍 全程约200km</span>
+      <span class="cover-pill">💰 约¥900-1300/人</span>
+    </div>
+  </div>
+  <div class="page">
+    <div class="sec">全程路线图</div>
+    <div class="sec">行程一览</div>
+    ${dayCards}
+    <div class="sec">⚡ 出发前必读</div>
+    <div class="alert alert-red">
+      <div class="alert-icon">🏡</div>
+      <div class="alert-body">
+        <h4>太子尖民宿：现在就要订！</h4>
+        <p>旺季（6-8月）山顶民宿极度紧俏，能看日出云海的房型可能只剩几间。小红书/美团搜「太子尖 民宿 日出」，选好后立刻下单。</p>
+      </div>
+    </div>
+    <div class="alert alert-orange">
+      <div class="alert-icon">☁️</div>
+      <div class="alert-body">
+        <h4>云海预测攻略</h4>
+        <p>公式：D2傍晚下雨 + 夜间转晴 = D3早晨云海概率80%+。出发前看好天气，运气好就是仙境，运气差也有日出。</p>
+      </div>
+    </div>
+    <div class="alert alert-blue">
+      <div class="alert-icon">📵</div>
+      <div class="alert-body">
+        <h4>山区信号提醒</h4>
+        <p>浙西大峡谷和华浪线部分路段无信号。建议提前在高德下载「临安」「安吉」离线地图，峡谷内截图好步道地图。</p>
+      </div>
+    </div>
+    <div class="alert alert-green">
+      <div class="alert-icon">⚡</div>
+      <div class="alert-body">
+        <h4>电车用户友好提示</h4>
+        <p>全程约200km，沿途临安市区、安吉县城均有超级充电桩，不必焦虑。大峡谷/太子尖无充电，确保上山前电量充足。</p>
+      </div>
+    </div>
+    <div class="sec">💰 预算参考（人均）</div>
+    <div class="cost-table">
+      <div class="cost-row"><span class="cost-label">住宿（3晚 / 4人）</span><span class="cost-val">¥300-450</span></div>
+      <div class="cost-row"><span class="cost-label">餐饮（含4天三餐）</span><span class="cost-val">¥300-420</span></div>
+      <div class="cost-row"><span class="cost-label">景区门票（大峡谷+竹海+天池）</span><span class="cost-val">¥180-200</span></div>
+      <div class="cost-row"><span class="cost-label">油费/高速费（4人摊）</span><span class="cost-val">¥80-120</span></div>
+      <div class="cost-row"><span class="cost-label">其他（漂流/伴手礼等）</span><span class="cost-val">¥80-150</span></div>
+      <div class="cost-row"><span>总计（人均）</span><span class="cost-val">约 ¥940-1340</span></div>
+    </div>
+    <div class="sec">🎒 行李清单</div>
+    <div class="pack-grid">
+      <div class="pack-item"><span class="pack-icon">👟</span>防滑凉鞋（峡谷必备）</div>
+      <div class="pack-item"><span class="pack-icon">👕</span>换洗衣服（玩水必湿）</div>
+      <div class="pack-item"><span class="pack-icon">🧥</span>薄外套（山顶约15°C）</div>
+      <div class="pack-item"><span class="pack-icon">🌂</span>雨衣/折叠伞</div>
+      <div class="pack-item"><span class="pack-icon">🧴</span>防晒霜 SPF50+</div>
+      <div class="pack-item"><span class="pack-icon">🔦</span>手电筒（山顶夜晚用）</div>
+      <div class="pack-item"><span class="pack-icon">💊</span>晕车药/创可贴</div>
+      <div class="pack-item"><span class="pack-icon">📷</span>充电宝 + 数据线</div>
     </div>
   </div>`;
 }
 
-// ══════════ 页面 ══════════
-function overviewHTML(){
+// ══════════════════════════════════════════
+//  每日页面
+// ══════════════════════════════════════════
+function dayHTML(d){
+  const cards=d.locs.map(renderCard).join('');
   return `
-  <div class="hero"><h1>🎍 杭州·安吉四日游</h1><p>竹海秘境 · 峡谷瀑布 · 太子尖云海 · 高山天池</p></div>
-  <div class="info-grid">
-    <div class="ic"><div class="lbl">出行人数</div><div class="val">4人自驾</div></div>
-    <div class="ic"><div class="lbl">行程日期</div><div class="val">6月25–28日</div></div>
-    <div class="ic"><div class="lbl">住宿</div><div class="val">D1 汉庭·秋涛路<br>D2 太子尖民宿<br>D3 安吉民宿/连锁</div></div>
-    <div class="ic"><div class="lbl">预估费用</div><div class="val">约¥800-1200/人<br>（不含往返交通）</div></div>
-  </div>
-  <div class="sec">行程概览</div>
-  ${DAYS.slice(1).map(d=>`<div class="card" style="margin:0 14px 8px;cursor:pointer" onclick="go(${d.id})">
-    <div class="nm"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${d.color};margin-right:4px"></span>${d.label} · ${d.title}</div>
-    <div class="ds">${d.date}</div>
-  </div>`).join('')}
-  <div class="sec">行前提醒</div>
-  <div class="tip"><h4>🏨 太子尖民宿</h4>旺季必须提前3天以上预订！小红书/美团搜"太子尖 民宿 日出"，锁定能看云海方向的房型。</div>
-  <div class="tip"><h4>☁️ 云海概率</h4>前一天下雨 + 次日晴天 = 云海概率最高。建议出发前看天气预报，灵活调整行程顺序。</div>
-  <div class="tip"><h4>👟 装备清单</h4>防晒霜、雨衣（山区天气多变）、换洗衣服（峡谷玩水必湿）、防滑凉鞋、薄外套（山顶凉）。</div>
-  <div class="tip"><h4>⚡ 电车充电</h4>沿途临安、安吉县城充电桩均有。大峡谷景区前确认一次电量，全程约200公里无压力。</div>
-  <div class="sec">图例</div>
-  <div class="legend">
-    <div class="lg"><div class="lg-dot" style="background:var(--red)"></div>餐厅</div>
-    <div class="lg"><div class="lg-dot" style="background:var(--blue)"></div>景点</div>
-    <div class="lg"><div class="lg-dot" style="background:var(--orange)"></div>住宿</div>
-    <div class="lg"><div class="lg-dot" style="background:var(--gray)"></div>交通</div>
+  <div class="page">
+    <div class="day-intro">
+      <div class="day-intro-top">
+        <h2>${d.title}</h2>
+        <div class="date">${d.date}</div>
+      </div>
+      <div class="day-intro-route">
+        <span class="icon">🗺️</span>
+        <span>${d.route||''}</span>
+      </div>
+    </div>
+    <div class="sec">行程详情</div>
+    <div class="tl">${cards}</div>
   </div>`;
 }
 
-function dayHTML(d){
-  return `
-  <div class="day-head"><h2>${d.title}</h2><p>${d.date}</p></div>
-  <div class="route-bar">${d.route||''}</div>
-  <div class="sec">行程</div>
-  <div class="tl">${d.locs.map((l,i)=>card(l,d.id)).join('')}</div>`;
-}
-
-// ══════════ 交互 ══════════
-let cur=0;
+// ══════════════════════════════════════════
+//  导航 & 交互
+// ══════════════════════════════════════════
+let curDay=0;
 const tabsEl=document.getElementById('tabs');
-const contentEl=document.getElementById('content');
+const rootEl=document.getElementById('root');
 
 DAYS.forEach(d=>{
   const btn=document.createElement('button');
   btn.className='tab'+(d.id===0?' active':'');
-  btn.dataset.day=d.id; btn.textContent=d.label;
+  btn.style.setProperty('--c', d.color||'#007aff');
+  btn.dataset.day=d.id;
+  btn.textContent=d.label;
   tabsEl.appendChild(btn);
 });
-tabsEl.addEventListener('click',e=>{ const t=e.target.closest('.tab'); if(t) go(+t.dataset.day); });
+tabsEl.addEventListener('click',e=>{
+  const t=e.target.closest('.tab');
+  if(t) go(+t.dataset.day);
+});
+
+// 给 tab 设置 active 颜色
+function updateTabColors(idx){
+  tabsEl.querySelectorAll('.tab').forEach(t=>{
+    const active=+t.dataset.day===idx;
+    t.classList.toggle('active',active);
+    if(active){
+      const d=DAYS.find(x=>x.id===idx);
+      t.style.background=d?d.color:'#007aff';
+    } else {
+      t.style.background='';
+    }
+  });
+}
 
 function go(idx){
-  cur=idx;
-  tabsEl.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',+t.dataset.day===idx));
-  const d=DAYS.find(x=>x.id===idx);
+  curDay=idx;
+  updateTabColors(idx);
 
-  // 清空并插入地图
-  contentEl.innerHTML='';
+  rootEl.innerHTML='';
+
+  // 地图
   const mapEl=buildMap(idx);
-  contentEl.appendChild(mapEl);
+  rootEl.appendChild(mapEl);
 
-  // 插入文字内容
-  const text=document.createElement('div');
-  text.innerHTML=idx===0?overviewHTML():dayHTML(d);
-  contentEl.appendChild(text);
+  // 内容
+  const div=document.createElement('div');
+  const d=DAYS.find(x=>x.id===idx);
+  div.innerHTML=idx===0?overviewHTML():dayHTML(d);
+  rootEl.appendChild(div);
+
+  // 总览页的地图需要插入到 .page 内 .sec:first 之前
+  if(idx===0){
+    const page=div.querySelector('.page');
+    const firstSec=page?page.querySelector('.sec'):null;
+    if(page && firstSec){
+      const m2=buildMap(0);
+      page.insertBefore(m2,firstSec);
+    }
+  }
 
   window.scrollTo({top:0,behavior:'smooth'});
   const tab=tabsEl.querySelector(`[data-day="${idx}"]`);
   if(tab) tab.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
 }
 
-function toggle(id){
-  const el=document.getElementById(id);
-  if(el) el.classList.toggle('open');
-}
-
-// ══════════ Action Sheet 导航 ══════════
+// Action Sheet
 const overlay=document.getElementById('overlay');
 overlay.addEventListener('click',e=>{ if(e.target===overlay) closeAS(); });
 
-function openAS(name,gmapUrl,amapUrl){
-  const appleUrl=`https://maps.apple.com/?q=${encodeURIComponent(name)}`;
+function openAS(name,gmap,amap){
+  const apple=`https://maps.apple.com/?q=${encodeURIComponent(name)}`;
   document.getElementById('as-opts').innerHTML=
-    `<button class="si" onclick="window.open('${appleUrl}');closeAS()">🍎 Apple Maps</button>`+
-    (gmapUrl?`<button class="si" onclick="window.open('${gmapUrl}');closeAS()">🗺️ Google Maps</button>`:'')+
-    (amapUrl?`<button class="si" onclick="window.open('${amapUrl}');closeAS()">🧭 高德地图</button>`:'');
+    `<button class="si" onclick="open2('${apple}')">🍎 Apple Maps</button>`+
+    (gmap?`<button class="si" onclick="open2('${gmap}')">🗺️ Google Maps</button>`:'')+
+    (amap?`<button class="si" onclick="open2('${amap}')">🧭 高德地图</button>`:'');
   overlay.classList.add('show');
 }
+function open2(url){ window.open(url,'_blank'); closeAS(); }
 function closeAS(){ overlay.classList.remove('show'); }
 
 go(0);
